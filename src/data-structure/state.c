@@ -57,7 +57,7 @@ bool estBut(State s, State but){
     }
 }
 
-bool egal(State s1, State s2){
+bool equalState(State s1, State s2){
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (s1.matrix[i][j] != s2.matrice2[i][j]) {
