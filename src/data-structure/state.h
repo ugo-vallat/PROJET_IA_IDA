@@ -23,11 +23,19 @@ typedef struct s_move {
  * 
  */
 typedef struct s_move_state{
+    State before; /* Etat avant déplacement */
     Move move;    /* Déplacement */ 
-    State result;     /* Etat résultat */
+    State after;  /* Etat après déplacement */
 }MoveState;
 
 void afficherState(State e);
+
+/**
+ * @brief Renvoie les mouvements Possible d'un Etat
+ * 
+ * @param e Etat initiale
+ * @return Un tableau de tout les mouvements possible de l'Etat
+ */
 
 Move* findMoves(State e);
 
