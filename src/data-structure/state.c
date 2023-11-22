@@ -29,8 +29,12 @@ Move* findMoves(State e){
             }
         }
     }
+    for (moves_iterator; moves_iterator < 9; moves_iterator++) {
+      m.id = -1;
+      moves[moves_iterator] = -1
+    }
     return moves;
-    
+
 }
 
 Action applyMove(State s, Move m){
@@ -64,9 +68,19 @@ bool egal(State s1, State s2){
     return true;
 }
 
-void opPoss(State s, MoveState *res, int *nb_move){
-    //TODO
+Action* opPoss(State s, int *nb_move){
+    Move[9] moves_tab = findMoves(s);
+    Action[9] action_possibles;
+    for (int i = 0 ; i < 9; i++) {
+      if (moves_tab.id != -1){
+        *nb_move++;
+      }
+
+      action_possibles[i] = applyMove(s,moves_tab);
+    }
+  return action_possibles;
 }
+
 
 
 void testMoveIsValid(Move m, char* fun_name) {
@@ -76,7 +90,7 @@ void testMoveIsValid(Move m, char* fun_name) {
     test &= m.stem_src >= 0;
     test &= m.stem_src <= 3;
     test &= m.stem_dst >= 0;
-    test &= m.stem_dst <= 3; 
+    test &= m.stem_dst <= 3;
     if(!test) {
         fprintf(stderr, "[in %s] Coup invalide (id = %d, stem_src = %d, stem_dst = %d, weight = %d)\n",
              fun_name, m.id, m.stem_src, m.stem_dst, m.weight);
@@ -84,9 +98,13 @@ void testMoveIsValid(Move m, char* fun_name) {
     }
 }
 
+
 bool isMovePossible(State s, Move m){
-    //TODO
-    return null;
+    bool test = true;
+    if (s.matrix[m.stem_src][0] == 0 || s.matrix[m.stem_dst][0] == 3){
+      return false;
+    }
+    return test;
 }
 
 
