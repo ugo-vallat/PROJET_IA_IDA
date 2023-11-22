@@ -33,13 +33,14 @@ Move* findMoves(State e){
     
 }
 
-MoveState applyMove(State s, Move m){
-    MoveState ms;
+Action applyMove(State s, Move m){
+    Action ms;
+    ms.before = m;
     s.matrix[m.stem_dest][s.matrix[m.stem_dest][0] + 1] = m.id;
     s.matrix[m.stem_src][s.matrix[m.stem_src][0]] = 0
     s.matrix[m.stem_src][0]--;
     ms.move = m;
-    ms.result = s;
+    ms.after = s;
     return ms;
 
 }
