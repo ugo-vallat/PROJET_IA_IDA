@@ -63,7 +63,7 @@ bool isBut(State s, State but);
  * @param s2 Etat 2
  * @return true si égaux, false sinon
  */
-bool egal(State s1, State s2);
+bool equalState(State s1, State s2);
 
 /**
  * @brief Renvoie la liste des mouvement-etats possibles
@@ -72,7 +72,7 @@ bool egal(State s1, State s2);
  * @param res Tableau des mouvement-etats possibles
  * @param nb_move Nombre de mouvement-etats possibles
  */
-void opPoss(State s, Action *res, int *nb_move);
+Action* opPoss(State s, int *nb_move);
 
 /**
  * @brief Test si un coup est valide (respect des prédicats)
