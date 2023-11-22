@@ -9,7 +9,7 @@ typedef struct s_state {
 
 /**
  * @brief contient les informations relatives au déplacement d'un anneau
- * 
+ *
  */
 typedef struct s_move {
     int id;         /* numéro(id) de l'anneau. Pre : 1 <= id <= 9*/
@@ -20,72 +20,74 @@ typedef struct s_move {
 
 /**
  * @brief Contient les informations de déplacement et le résultat obtenu
- * 
+ *
  */
 typedef struct s_action{
     State before; /* Etat avant déplacement */
-    Move move;    /* Déplacement */ 
+    Move move;    /* Déplacement */
     State after;  /* Etat après déplacement */
 }Action;
 
 void afficherState(State e);
+void afficherMove(Move m);
+
 
 /**
  * @brief Renvoie les mouvements Possible d'un Etat
- * 
+ *
  * @param e Etat initiale
  * @return Un tableau de tout les mouvements possible de l'Etat
  */
 
-Move* findMoves(State e);
+void findMoves(State e, Move* moves);
 
 /**
  * @brief Renvoie le nouvel Etat suite à un déplacement
- * 
+ *
  * @param s Etat initiale
- * @param m Mouvement à appliquer 
- * @return Nouvel Etat 
+ * @param m Mouvement à appliquer
+ * @return Nouvel Etat
  */
 Action applyMove(State s, Move m);
 
 /**
  * @brief Test si l'état correspond au but
- * 
- * @param s Etat testé 
+ *
+ * @param s Etat testé
  * @return true si égal au but, false sinon
  */
-bool isBut(State s, State but);
+bool estBut(State s, State but);
 
 /**
  * @brief Test si 2 états son similaires
- * 
+ *
  * @param s1 Etat 1
  * @param s2 Etat 2
  * @return true si égaux, false sinon
  */
-bool equalState(State s1, State s2);
+bool egal(State s1, State s2);
 
 /**
  * @brief Renvoie la liste des mouvement-etats possibles
- * 
+ *
  * @param s Etat initiale
- * @param res Tableau des mouvement-etats possibles
+ * @return res Tableau des mouvement-etats possibles
  * @param nb_move Nombre de mouvement-etats possibles
  */
-Action* opPoss(State s, int *nb_move);
+ void opPoss(State s, int *nb_move, Action* action_possibles);
 
 /**
  * @brief Test si un coup est valide (respect des prédicats)
  * @param c coup à tester
  * @param fun_name Nom de la fonction appelante
- * 
+ *
  */
 void testMoveIsValid(Move m, char* fun_name);
 
 
 /**
  * @brief Renvoie si le mouvement est possible
- * 
+ *
  * @param s Etat initiale
  * @param m Movement à tester sur l'Etat
  * @return true si possible, false sinon
@@ -94,7 +96,7 @@ bool isMovePossible(State s, Move m);
 
 /**
  * @brief Test si la valeur d'un pique est valide
- * 
+ *
  * @param stem Pique à tester
  * @param fun_name Nom de la fonction appelante
  */
