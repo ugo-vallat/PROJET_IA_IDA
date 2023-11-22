@@ -22,11 +22,11 @@ typedef struct s_move {
  * @brief Contient les informations de déplacement et le résultat obtenu
  * 
  */
-typedef struct s_move_state{
+typedef struct s_action{
     State before; /* Etat avant déplacement */
     Move move;    /* Déplacement */ 
     State after;  /* Etat après déplacement */
-}MoveState;
+}Action;
 
 void afficherState(State e);
 
@@ -46,7 +46,7 @@ Move* findMoves(State e);
  * @param m Mouvement à appliquer 
  * @return Nouvel Etat 
  */
-MoveState applyMove(State s, Move m);
+Action applyMove(State s, Move m);
 
 /**
  * @brief Test si l'état correspond au but
