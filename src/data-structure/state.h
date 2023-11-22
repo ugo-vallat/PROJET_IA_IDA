@@ -72,7 +72,7 @@ bool egal(State s1, State s2);
  * @param res Tableau des mouvement-etats possibles
  * @param nb_move Nombre de mouvement-etats possibles
  */
-void opPoss(State s, MoveState *res, int *nb_move);
+void opPoss(State s, Action *res, int *nb_move);
 
 /**
  * @brief Test si un coup est valide (respect des prédicats)
