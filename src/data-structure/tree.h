@@ -1,30 +1,27 @@
 
-
-
 #ifndef __TREE_H__
 #define __TREE_H__
 
-#include "etat.h"
+#include "state.h"
 #include "utils.h"
 #include <stdbool.h>
 
 
 typedef struct s_link Link;
 
-typedef struct s_arbre Arbre;
-
-// typedef struct s_noeud Noeud;
+typedef struct s_tree Tree;
 
 struct s_link {
-    Coup coup;      /* informations sur le coup joué */
-    Arbre* a_src;     /* Noeud source */
-    Arbre* a_dst;    /* Noeud destination */
+    Move move;          /* mouvement de l'Etat source vers destination */
+    Tree* tree_src;     /* arbre source */
+    Tree* tree_dst;     /* arbre destination */
 };
 
-struct s_arbre {
-    Etat etat;          /* Etat du noeud */
-    Link pere;         /* NULL si root */
-    Link fils[4][4];   /* [pile_src][pile_dst] */
+struct s_tree {
+    State state;        /* Etat du noeud */
+    unsigned depth;          /* profondeur du noeud : racine = 0*/
+    Link parent;        /* NULL si root */
+    Link child[4][4];   /* [pile_src][pile_dst] */
 };
 
 
@@ -32,65 +29,84 @@ struct s_arbre {
 /**
  * @brief Crée un abre
  * 
- * @return Arbre* 
- * @note Renvoie une sentinelle
+ * @param s Etat du noeud racine
+ * @return Arbre créé
  */
-Arbre* creer_arbre(Etat e);
+Tree* createTree(State s);
 
 /**
  * @brief Ajoute une feuille au noeud courant
  * 
- * @param a Arbre (noeud) courant
- * @param c 
- * @param e 
+ * @param t Arbre à compléter
+ * @param s Nouvel Etat
+ * @param m Mouement transition 
  */
-void ajouter_Noeud(Arbre* a, Coup c, Etat e);
+void addLeaf(Tree* t, State s, Move m);
 
 /**
- * @brief fusionne 2 arbre (ajout de l'arbre fils dans l'arbre père)
+ * @brief Test si le sous tree existe
  * 
- * @param a_pere Pere
- * @param a_fils Fils
- * @param c Coup de l'etat pere à l'etat fils
- * @return Arbre pere
+ * @param t Arbre courrant
+ * @param stem_src Pige source
+ * @param stem_dst Pige destination
+ * @return true si existe, false sinon
  */
-Arbre* arbre_fusioner(Arbre* a_pere, Arbre* a_fils, Coup c);
+bool existChild(Tree* t, int stem_src, int stem_dst);
+
+/**
+ * @brief Renvoie le mouvement associée au coup (stem_src,stem_dst)
+ * 
+ * @param t Arbre courant
+ * @param stem_src Pige source
+ * @param stem_dst Pige destination
+ * @return Move 
+ */
+Move getMov(Tree* t, int stem_src, int stem_dst);
 
 /**
  * @brief Renvoie l'adresse du sous arbre fils
  * 
- * @param a Arbre parcouru
- * @param c Coup vers prochain Etat
- * @return Racine du sous arbre, NULL si aucun
+ * @param t Arbre courant
+ * @param stem_src Pige source
+ * @param stem_dst Pige destination
+ * @return Racine du sous tree, NULL si aucun
  */
-Arbre* vers_fils(Arbre* a, Coup c);
+Tree* getChild(Tree* t, int stem_src, int stem_dst);
 
 /**
  * @brief Renvoie l'arbre parent de l'arbre courant (noeud parent)
  * 
- * @param a Arbre courant
+ * @param t Arbre courant
  * @return Arbre parent, NULL si racine
  */
-Arbre* vers_pere(Arbre* a);
+Tree* getParent(Tree* t);
 
-
-
-/**
- * @brief Test si le sous arbre existe
- * 
- * @param a Arbre courrant
- * @param c Coup à tester
- * @return true si existe, false sinon
- */
-bool existe_fils(Arbre* a, Coup c);
 
 /**
  * @brief Test si le noeud courant est la racine
  * 
- * @param a Arbre parcouru
+ * @param t Arbre Courant
  * @return true si racine, false sinon
  */
-bool est_racine(Arbre* a);
+bool isRoot(Tree* t);
+
+
+/**
+ * @brief Renvoie la profondeur de l'arbre courant
+ * 
+ * @param t Arbre courant
+ * @return profondeur 
+ */
+unsigned getDepth(Tree *t);
+
+/**
+ * @brief test si un arbre est une feuille
+ * 
+ * @param t arbre à tester
+ * @return true si feuille, false sinon
+ */
+bool isLeaf(Tree *t);
+
 
 
 

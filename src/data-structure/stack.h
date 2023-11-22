@@ -9,7 +9,7 @@
 #define __STACK_H__
 #include <stdio.h>
 #include <stdbool.h>
-#include "etat.h"
+#include "tree.h"
 
 /** Opaque definition of type Stack */
 typedef struct s_stack Stack;
@@ -32,7 +32,7 @@ void deleteStack(ptrStack *s);
  * @return the modified stack.
  * @note implemented using side effect on the stack. After execution, s is the same than the returned stack.
  */
-Stack *stackPush(Stack *s, Etat * e);
+Stack *stackPush(Stack *s, Tree *t);
 
 /** Test if a stack is empty.
  * @param s : the Stack to test.
@@ -53,7 +53,7 @@ Stack *stackPop(Stack *s);
  * @param s : the Stack to examine.
  * @return the value at the top of the stack.
  */
-Etat *stackTop(Stack *s);
+Tree *stackTop(Stack *s);
 
 /** Return true if the stack will overflow on the next push.
  * @param s : the Stack to examine.
@@ -64,7 +64,7 @@ bool stackOverflow(Stack *s);
 /** Dump the stack (print it) on the given FILE*
  * Dump the stack using the provided function that must dump the data to the given FILE*.
  */
-void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, Etat *e));
+void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, Tree *t));
 
 /** Return the number of elements in the stack
  */

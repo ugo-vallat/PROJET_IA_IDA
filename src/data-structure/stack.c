@@ -7,13 +7,13 @@
 #include "stack.h"
 #include <assert.h>
 #include <stdlib.h>
-#include "etat.h"
+#include "tree.h"
 
 #define STACK_SIZE 2048
 
 /* Full definition of the s_stack structure */
 struct s_stack {
-	Etat **stack; // array of Etat *
+	Arbre **stack; // array of Etat *
 	int top;
 	int capacity;
 };
@@ -34,9 +34,9 @@ void deleteStack(ptrStack *s) {
 	*s = NULL;
 }
 
-Stack *stackPush(Stack *s, Etat * e) {
+Stack *stackPush(Stack *s, Arbre* a) {
 	assert(s->top != STACK_SIZE-1);
-	s->stack[++(s->top)] = e;
+	s->stack[++(s->top)] = a;
 	return(s);
 }
 
@@ -50,7 +50,7 @@ Stack *stackPop(Stack *s) {
 	return(s);
 }
 
-Etat *stackTop(Stack *s) {
+Arbre *stackTop(Stack *s) {
 	assert(!stackEmpty(s));
 	return (s->stack[s->top]);
 }
@@ -59,7 +59,7 @@ bool stackOverflow(Stack *s){
 	return s->top + 1 == s->capacity;
 }
 
-void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, Etat *e)) {
+void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, Arbre *a)) {
 	fprintf(f, "(%d) --  ", s->top+1);
 	for (int i=s->top; i>=0; --i)
 		dumpfunction(f, s->stack[i]);

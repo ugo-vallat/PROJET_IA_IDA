@@ -19,18 +19,3 @@ void testArgNull(void* arg, char* nom_fun) {
         exit(EXIT_FAILURE);
     }       
 }
-
-void testCoupEstValide(Coup c, char* fun) {
-    bool test = true;
-    test &= c.id >= 1;
-    test &= c.id <= 9;
-    test &= c.p_src >= 0;
-    test &= c.p_src <= 3;
-    test &= c.p_dst >= 0;
-    test &= c.p_dst <= 3; 
-    if(!test) {
-        fprintf(stderr, "[in %s] Coup invalide (id = %d, p_src = %d, p_dst = %d, weight = %d)\n",
-             fun, c.id, c.p_src, c.p_dst, c.weight);
-        exit(EXIT_FAILURE);
-    }
-}
