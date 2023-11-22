@@ -22,8 +22,8 @@ Move* findMoves(State e){
             (if e.matrix[j][0] != 3 && j != i ){
                 m.id = e.matrix[i][e.matrix[i][0]];
                 m.weight = 1;
-                m.stem_src = i+1;
-                m.stem_dest = j+1;
+                m.stem_src = i;
+                m.stem_dest = j;
                 moves[moves_iterator] = m;
                 moves_iterator++;
             }
