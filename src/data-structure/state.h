@@ -54,7 +54,7 @@ Action applyMove(State s, Move m);
  * @param s Etat testé 
  * @return true si égal au but, false sinon
  */
-bool estBut(State s, State but);
+bool isBut(State s, State but);
 
 /**
  * @brief Test si 2 états son similaires
