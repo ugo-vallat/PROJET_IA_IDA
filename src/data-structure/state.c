@@ -72,11 +72,11 @@ Action* opPoss(State s, int *nb_move){
     Move[9] moves_tab = findMoves(s);
     Action[9] action_possibles;
     for (int i = 0 ; i < 9; i++) {
-      if (moves_tab.id != -1){
+      if (moves_tab[i].id != -1){
         *nb_move++;
       }
 
-      action_possibles[i] = applyMove(s,moves_tab);
+      action_possibles[i] = applyMove(s,moves_tab[i]);
     }
   return action_possibles;
 }
