@@ -9,11 +9,10 @@
 #include <stdlib.h>
 #include "tree.h"
 
-#define STACK_SIZE 2048
 
 /* Full definition of the s_stack structure */
 struct s_stack {
-	Arbre **stack; // array of Etat *
+	TYPE*stack; // array of Etat *
 	int top;
 	int capacity;
 };
@@ -22,7 +21,7 @@ Stack *createStack(int max_size) {
 	Stack *s;
 	size_t capacity = (max_size > 0 ? max_size : STACK_SIZE);
 	s = malloc(sizeof(struct s_stack));
-	s->stack = malloc(sizeof(Etat *) * capacity);
+	s->stack = malloc(sizeof(TYPE) * capacity);
 	s->capacity = capacity;
 	s->top=-1;
 	return (s);
@@ -34,7 +33,7 @@ void deleteStack(ptrStack *s) {
 	*s = NULL;
 }
 
-Stack *stackPush(Stack *s, Arbre* a) {
+Stack *stackPush(Stack *s, TYPE a) {
 	assert(s->top != STACK_SIZE-1);
 	s->stack[++(s->top)] = a;
 	return(s);
@@ -50,7 +49,7 @@ Stack *stackPop(Stack *s) {
 	return(s);
 }
 
-Arbre *stackTop(Stack *s) {
+TYPE stackTop(Stack *s) {
 	assert(!stackEmpty(s));
 	return (s->stack[s->top]);
 }
@@ -59,7 +58,7 @@ bool stackOverflow(Stack *s){
 	return s->top + 1 == s->capacity;
 }
 
-void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, Arbre *a)) {
+void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, TYPE a)) {
 	fprintf(f, "(%d) --  ", s->top+1);
 	for (int i=s->top; i>=0; --i)
 		dumpfunction(f, s->stack[i]);

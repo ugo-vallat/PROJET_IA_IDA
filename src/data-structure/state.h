@@ -28,8 +28,9 @@ typedef struct s_action{
     State after;  /* Etat après déplacement */
 }Action;
 
-void afficherState(State e);
-void afficherMove(Move m);
+void displayState(State e);
+void displayMove(Move m);
+void displayAction(Action *a);
 
 
 /**
@@ -56,7 +57,7 @@ Action applyMove(State s, Move m);
  * @param s Etat testé
  * @return true si égal au but, false sinon
  */
-bool estBut(State s, State but);
+bool stateIsGoal(State s, State but);
 
 /**
  * @brief Test si 2 états son similaires
@@ -65,7 +66,7 @@ bool estBut(State s, State but);
  * @param s2 Etat 2
  * @return true si égaux, false sinon
  */
-bool egal(State s1, State s2);
+bool equalState(State s1, State s2);
 
 /**
  * @brief Renvoie la liste des mouvement-etats possibles
@@ -74,7 +75,7 @@ bool egal(State s1, State s2);
  * @return res Tableau des mouvement-etats possibles
  * @param nb_move Nombre de mouvement-etats possibles
  */
- void opPoss(State s, int *nb_move, Action* action_possibles);
+ void stateOpPoss(State s, int *nb_move, Action* action_possibles);
 
 /**
  * @brief Test si un coup est valide (respect des prédicats)
@@ -103,4 +104,46 @@ bool isMovePossible(State s, Move m);
 void testStemValid(int stem, char* fun_name);
 
 
+/**
+ * @brief Crée une structure Action (malloc)
+ * 
+ * @param before Etat de depart
+ * @param move Mouvement appliqué
+ * @param after Etat d'arrivée
+ * @return structure Action
+ */
+Action* createAction(State before, Move move, State after);
+
+/**
+ * @brief Supprime l'action et libère la mémoire
+ * 
+ * @param act Action à supprimer
+ */
+void deleteAction(Action* act);
+
+
+/**
+ * @brief Copy les information de src dans dst
+ * 
+ * @param src Source 
+ * @param dst Destination
+ */
+void copyState(State *src, State *dst);
+
+/**
+ * @brief Copy les information de src dans dst
+ * 
+ * @param src Source 
+ * @param dst Destination
+ */
+void copyMove(Move *src, Move *dst);
+
+
+ /**
+ * @brief Copy les information de src dans dst
+ * 
+ * @param src Source 
+ * @param dst Destination
+ */
+void copyAction(Action *src, Action *dst);
 #endif
