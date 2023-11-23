@@ -1,7 +1,6 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
-#define TYPE Action*
 
 /**
  * @brief Exit le programme en affichant le message msg

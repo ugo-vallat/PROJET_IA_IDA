@@ -16,7 +16,7 @@
 struct s_list {
     unsigned int memory_size; /* Taille du tableau en mémoire */
     unsigned int size;        /* taille de la liste (nombre éléments) */
-    TYPE *tab;                 /* tableau des valeurs */
+    Action** tab;                 /* tableau des valeurs */
 };
 
 
@@ -26,7 +26,7 @@ List *createList(unsigned int size) {
     if (l == NULL)
         error("erreur malloc list", EXIT_FAILURE);
 
-    l->tab = malloc(sizeof(TYPE) * size);
+    l->tab = malloc(sizeof(Action*) * size);
     if (l->tab == NULL && size != 0)
         error("[in createList] erreur malloc tab", EXIT_FAILURE);
 
@@ -62,14 +62,14 @@ void adjustMemorySizeList(List *l, unsigned int new_size) {
     l->memory_size = new_size;
 
     /* modification taille du tableau */
-    l->tab = realloc(l->tab, new_size * sizeof(TYPE));
+    l->tab = realloc(l->tab, new_size * sizeof(Action*));
     if (new_size != 0 && l->tab == NULL)
         error("[in adjustMemorySizeList] echec realloc tab", EXIT_FAILURE);
 }
 
 
 
-void listAdd(List *l, TYPE v) {
+void listAdd(List *l, Action* v) {
     /* test l != NULL */
     testArgNull(l, "listAdd");
 
@@ -85,14 +85,14 @@ void listAdd(List *l, TYPE v) {
 
 
 
-TYPE listPop(List *l) {
+Action* listPop(List *l) {
     /* vérification paramêtre */
     testArgNull(l, "listPop");
     if (l->size <= 0)
         error("[in listPop] liste déjà vide", EXIT_FAILURE);
 
     /* suppression de l'élément */
-    TYPE elem = l->tab[l->size-1];
+    Action* elem = l->tab[l->size-1];
     l->size--;
     adjustMemorySizeList(l, l->size);
     return elem;
@@ -111,14 +111,14 @@ unsigned int listSize(List *l) {
     return l->size;
 }
 
-TYPE listLast(List *l) {
+Action* listLast(List *l) {
     testArgNull(l, "listLast");
     if(l->size == 0) return NULL;
     else return l->tab[l->size-1];
 }
 
 
-TYPE listGet(List *l, unsigned i) {
+Action* listGet(List *l, unsigned i) {
     testArgNull(l, "listGet");
     if(i >= l->size)
         error("[in listGet] Invalide position", EXIT_FAILURE);
@@ -126,7 +126,7 @@ TYPE listGet(List *l, unsigned i) {
 }
 
 
-bool searchElem(List *l, TYPE e, bool (*equal)(TYPE e1, TYPE e2)) {
+bool searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2)) {
     testArgNull(l, "searchElem");
     for(unsigned i = 0; i < l->size; i++)
         if(equal(e, l->tab[i])) 
@@ -135,11 +135,11 @@ bool searchElem(List *l, TYPE e, bool (*equal)(TYPE e1, TYPE e2)) {
 }
 
 
-bool equal_state(TYPE e1, TYPE e2) {
+bool equal_state(Action* e1, Action* e2) {
     return equalState(*((State*)e1), *((State*)e2));
 }
 
-bool equal_action(TYPE e1, TYPE e2) {
+bool equal_action(Action* e1, Action* e2) {
     return equalState(e1->after, e2->after);
 }
 

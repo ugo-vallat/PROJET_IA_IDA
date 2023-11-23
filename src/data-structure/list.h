@@ -40,7 +40,7 @@ void deleteList(ptrList *l);
  * @param v Valeur à ajouter
  * @pre l != NULL
  */
-void listAdd(List *l, TYPE v);
+void listAdd(List *l, Action* v);
 
 
 /**
@@ -52,7 +52,7 @@ void listAdd(List *l, TYPE v);
  * @pre taille liste > 0
  * @return valeur avant suppression
  **/
-TYPE listPop(List *l);
+Action* listPop(List *l);
 
 
 
@@ -82,15 +82,15 @@ unsigned int listSize(List *l);
  * @param l Liste
  * @return Dernier élément 
  */
-TYPE listLast(List *l);
+Action* listLast(List *l);
 /**
  * @brief Renvoie l'élément à la position i
  * 
  * @param l Liste
  * @param i position
- * @return TYPE 
+ * @return Action* 
  */
-TYPE listGet(List *l, unsigned i);
+Action* listGet(List *l, unsigned i);
 
 
 /**
@@ -100,11 +100,11 @@ TYPE listGet(List *l, unsigned i);
  * @param s Element à chercher
  * @return true si trouvé, false sinon
  */
-bool searchElem(List *l, TYPE e, bool (*equal)(TYPE e1, TYPE e2));
+bool searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2));
 
-bool equal_state(TYPE e1, TYPE e2);
+bool equal_state(Action* e1, Action* e2);
 
-bool equal_action(TYPE e1, TYPE e2);
+bool equal_action(Action* e1, Action* e2);
 
 
 /**

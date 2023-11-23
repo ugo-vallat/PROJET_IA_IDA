@@ -40,6 +40,7 @@ Action applyMove(State s, Move m){
     return ms;
 
 }
+
 bool stateIsGoal(State s, State but){
     if (equalState(s,but)){
         return true;
@@ -72,8 +73,6 @@ void stateOpPoss(State s, int *nb_move, Action* action_possibles){
     }
 }
 
-
-
 bool isMovePossible(State s, Move m){
     bool test = true;
     if (s.matrix[m.stem_src][0] > 0 || s.matrix[m.stem_dst][0] < 3){
@@ -81,6 +80,30 @@ bool isMovePossible(State s, Move m){
     }
     return test;
 }
+
+/*
+    ================
+    ===  ACTION  ===
+    ================
+*/
+Action* createAction(State before, Move move, State after) {
+    Action *act = malloc(sizeof(Action));
+    copyState(&(before), &(act->before));
+    copyState(&(after), &(act->after));
+    copyMove(&(move), &(act->move));
+    return act;
+}
+
+void deleteAction(Action* act) {
+    free(act);
+}
+
+
+/*
+    ===============
+    ===  COPIE  ===
+    ===============
+*/
 
 void copyState(State *src, State *dst) {
     for(unsigned i = 0; i < 4; i++)
@@ -102,26 +125,6 @@ void copyAction(Action *src, Action *dst) {
 }
 
 
-
-
-
-
-/*
-    ================
-    ===  ACTION  ===
-    ================
-*/
-Action* createAction(State before, Move move, State after) {
-    Action *act = malloc(sizeof(Action));
-    copyState(&(before), &(act->before));
-    copyState(&(after), &(act->after));
-    copyMove(&(move), &(act->move));
-    return act;
-}
-
-void deleteAction(Action* act) {
-    free(act);
-}
 
 /*
     ===============
@@ -163,6 +166,12 @@ void displayMove(Move m){
   printf("(pic depart = %d , pic arrivee = %d , valeur deplacee = %d)\n", m.stem_src,m.stem_dst,m.id);
 }
 
+/**
+ * @brief Convertion valeur en char (vtc)
+ * 
+ * @param v valeur de l'anneau
+ * @return char 
+ */
 char vtc(int v) {
     switch(v) {
         case 1: return '1';
@@ -178,13 +187,11 @@ char vtc(int v) {
     return ' ';
 }
 
-
 void displayState(State s){
     for(int i = 3; i >= 1; i--)
         printf("┃ %c %c %c %c ┃\n", vtc(s.matrix[0][i]), vtc(s.matrix[1][i]), vtc(s.matrix[2][i]), vtc(s.matrix[3][i]));
     printf("┖─────────┚\n");
 }
-
 
 void displayAction(Action *a) {
     Move m = a->move;

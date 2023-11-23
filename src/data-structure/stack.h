@@ -35,7 +35,7 @@ void deleteStack(ptrStack *s);
  * @return the modified stack.
  * @note implemented using side effect on the stack. After execution, s is the same than the returned stack.
  */
-Stack *stackPush(Stack *s, TYPE t);
+Stack *stackPush(Stack *s, Action* t);
 
 /** Test if a stack is empty.
  * @param s : the Stack to test.
@@ -56,7 +56,7 @@ Stack *stackPop(Stack *s);
  * @param s : the Stack to examine.
  * @return the value at the top of the stack.
  */
-TYPE stackTop(Stack *s);
+Action* stackTop(Stack *s);
 
 /** Return true if the stack will overflow on the next push.
  * @param s : the Stack to examine.
@@ -67,7 +67,7 @@ bool stackOverflow(Stack *s);
 /** Dump the stack (print it) on the given FILE*
  * Dump the stack using the provided function that must dump the data to the given FILE*.
  */
-void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, TYPE t));
+void stackDump(FILE *f, Stack *s, void(*dumpfunction)(FILE *f, Action* t));
 
 /** Return the number of elements in the stack
  */

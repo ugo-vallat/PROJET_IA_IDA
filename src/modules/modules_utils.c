@@ -6,6 +6,12 @@
 
 #define STRING_BUFF_SIZE 64
 
+/*
+    ===================
+    ===  AFFICHAGE  ===
+    ===================
+*/
+
 char* algoToString(Algo a) {
     char *buff = malloc(sizeof(char)*STRING_BUFF_SIZE);
     switch ((int)a) {
@@ -21,7 +27,6 @@ char* algoToString(Algo a) {
     }
     return buff;
 }
-
 
 void displayResSearch(ResSearch *res) {
     char* algo;
@@ -74,7 +79,13 @@ void showGameAnimation(ResSearch *res, State init_state) {
     printf("\033[5B");
 }
 
-ResSearch* createResSearch(Algo algo, unsigned size_path) {
+/*
+    ===================
+    ===  ResSearch  ===
+    ===================
+*/
+
+ResSearch* createResSearch(Algo algo, unsigned size_path_max) {
     ResSearch *res = malloc(sizeof(ResSearch));
     res->algo = algo;
     res->cost = 0;
@@ -82,7 +93,7 @@ ResSearch* createResSearch(Algo algo, unsigned size_path) {
     res->nb_ite = 0;
     res->nb_state_created = 0;
     res->nb_state_processed = 0;
-    res->path = malloc(sizeof(Action)*size_path);
+    res->path = malloc(sizeof(Action)*size_path_max);
     res->size_path = 0;
     return res;
 }

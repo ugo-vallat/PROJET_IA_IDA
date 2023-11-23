@@ -22,6 +22,12 @@ struct s_result_search {
     unsigned nb_state_processed; /* Nombre d'états explorés */
 };
 
+/*
+    ===================
+    ===  AFFICHAGE  ===
+    ===================
+*/
+
 /**
  * @brief Affiche les résultats de l'algo
  * 
@@ -29,13 +35,43 @@ struct s_result_search {
  */
 void displayResSearch(ResSearch *res);
 
-
+/**
+ * @brief Affiche une barre de chargement
+ * 
+ * @param size Taille de la barre
+ * @param max taille max de la barre
+ * @param ite numéro d'itération
+ */
 void loadingBarDepth(int size, int max, int ite);
 
+/**
+ * @brief Affiche le déroulé de la partie sous forme d'animation
+ * 
+ * @param res Résultat de la recherche
+ * @param init_state Etat initiale
+ */
 void showGameAnimation(ResSearch *res, State init_state);
 
-ResSearch* createResSearch(Algo algo, unsigned size_path);
+/*
+    ===================
+    ===  ResSearch  ===
+    ===================
+*/
 
+/**
+ * @brief Crée, alloue (malloc) et initialise la structure ResSearch
+ * 
+ * @param algo Algo utilisé
+ * @param size_path_max Taille maximale du chemin
+ * @return ResSearch* 
+ */
+ResSearch* createResSearch(Algo algo, unsigned size_path_max);
+
+/**
+ * @brief Supprime la structure res et libère la mémoire
+ * 
+ * @param res Résultat
+ */
 void deleteResSearch(ResSearch *res);
 
 
