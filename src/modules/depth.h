@@ -8,7 +8,7 @@
 #include "modules_utils.h"
 #include "../data-structure/state.h"
 
-
+#define LIST_DONE_SIZE 512
 
 /**
  * @brief Cherche l'état but en applique l'algorithme de recherche en 

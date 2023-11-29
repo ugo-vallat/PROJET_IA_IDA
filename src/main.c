@@ -32,8 +32,23 @@ int m2_start[4][4] = {
 int m2_end[4][4] = {
     {3,6,1,7},
     {2,2,8,0},
-    {2,3,0,0},
-    {2,4,9,5}
+    {1,3,0,0},
+    {3,4,9,5}
+};
+
+
+int m3_start[4][4] = {
+    {3,1,2,3},
+    {3,4,5,6},
+    {3,7,8,9},
+    {0,0,0,0}
+};
+
+int m3_end[4][4] = {
+    {2,1,2,0},
+    {2,4,3,0},
+    {2,7,8,0},
+    {3,9,6,5}
 };
 
 void printStackTrace() {
@@ -64,35 +79,16 @@ void loadMatrixInState(State *s, int m[4][4]) {
 
 void test_state() {
     State e;
-    e.matrix[0][0] = 3;e.matrix[1][0] = 3;e.matrix[2][0] = 3;e.matrix[3][0] = 0;
-    e.matrix[0][1] = 1;e.matrix[1][1] = 2;e.matrix[2][1] = 3;e.matrix[3][1] = 0;
-    e.matrix[0][2] = 4;e.matrix[1][2] = 5;e.matrix[2][2] = 6;e.matrix[3][2] = 0;
-    e.matrix[0][3] = 7;e.matrix[1][3] = 8;e.matrix[2][3] = 9;e.matrix[3][3] = 0;
+    int nb_mouv;
+    loadMatrixInState(&e, m3_start);
+    displayState(e);
 
-    Move mouvements_possibles[9];
+    Action mouvements_possibles[9];
 
-    Move m;
-    m.id = 7;
-    m.weight = 1;
-    m.stem_src = 0;
-    m.stem_dst = 3;
-    Action a = applyMove(e,m);
-    displayState(a.before);
-    displayState(a.after);
-    e = a.after;
-    findMoves(e,mouvements_possibles);
-    for(int i = 0; i< 9; i++){
-      if (mouvements_possibles[i].id != -1){
-        displayMove(mouvements_possibles[i]);
-      }
+    stateFindNextActions(e, &nb_mouv, mouvements_possibles);
+    for(int i = 0; i < nb_mouv; i++) {
+        displayAction(&mouvements_possibles[i]);
     }
-    m.id = 4;
-    m.weight = 1;
-    m.stem_src = 0;
-    m.stem_dst = 3;
-    a = applyMove(e,m);
-    displayState(a.before);
-    displayState(a.after);
 }
 
 
@@ -101,6 +97,7 @@ void test_list() {
     Action a;
     State e;
     loadMatrixInState(&e, m1_start);
+    displayState(e);
     Move m = {6,1,2,0};
 
     a = applyMove(e, m);
@@ -117,13 +114,13 @@ void test_list() {
 
 void test_depth() {
     State s_start, s_end;
-    loadMatrixInState(&s_start, m1_start);
-    loadMatrixInState(&s_end, m1_end);
+    loadMatrixInState(&s_start, m2_start);
+    loadMatrixInState(&s_end, m2_end);
 
     ResSearch* res;
     displayState(s_start);
     displayState(s_end);
-    res = search_depth(s_start, s_end, 5);
+    res = search_depth(s_start, s_end, 20);
     displayResSearch(res);
     showGameAnimation(res, s_start);
     deleteResSearch(res);
@@ -145,7 +142,8 @@ int main(void){
     
 
     // test_list();
-    test_depth();
+    test_state();
+    test_depth();   
 
 
 

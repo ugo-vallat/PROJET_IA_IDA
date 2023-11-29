@@ -24,6 +24,9 @@ void addToPath(List* path, Action* act) {
     }
     while(!listEmpty(path) && !equalState(act->before, listLast(path)->after))
         listPop(path);
+    if(listEmpty(path)) {
+        error("Echec ajout au chemin", EXIT_FAILURE);
+    }
     listAdd(path, act);
 }
 
@@ -38,9 +41,8 @@ bool search_depth_main(Stack* buff, List* done, List *path, State goal, unsigned
     while(!found && !stackEmpty(buff) && !stackOverflow(buff)) {
         /* information itération */
         ite++;
-        usleep(10000);
+        // usleep(10000);
         loadingBarDepth(listSize(path), max_depth+1, ite);
-
         /* récupérer prochain élément */
         cur = stackTop(buff);
         buff = stackPop(buff);
@@ -56,15 +58,22 @@ bool search_depth_main(Stack* buff, List* done, List *path, State goal, unsigned
             found = true;
         } else if (listSize(path) < max_depth + 1) {
             /* récupérer les prochaines actions */
-            stateOpPoss(cur->after, &nb_next_actions, next_actions);
+            stateFindNextActions(cur->after, &nb_next_actions, next_actions);
+            // printf("############################ CUR :\n");
+            // displayState(cur->after);
+            // printf("################# NEXT :\n");
+            // for(int i = 0; i < nb_next_actions; i++)
+            //     displayState(next_actions[i].after);
+            // printf("######### END\n");
+            // sleep(1);
 
             /* les ajouter au buffer */
             for(int i = 0; i < nb_next_actions; i++) {
                 tmp_action = next_actions[i];
-                if(!searchElem(done, &tmp_action, equal_action))
+                if(!searchElem(done, &tmp_action, equal_action)) {
                     stackPush(buff, createAction(next_actions[i].before, 
                         next_actions[i].move, next_actions[i].after));
-
+                }
             }
         }
     }
@@ -82,8 +91,8 @@ ResSearch* search_depth(State initial_state, State goal, unsigned max_depth) {
 
     /* initialisation outils */
     Stack* buff = createStack(STACK_MAX_SIZE);
-    List* path = createList(STACK_MAX_SIZE);
-    List* done = createList(16);
+    List* path = createList(max_depth+4);
+    List* done = createList(LIST_DONE_SIZE);
     State state; 
     copyState(&emptyState, &state);
     Move mv = {0,0,0,0};

@@ -75,7 +75,7 @@ void listAdd(List *l, Action* v) {
 
     /* agrandissement de la liste si pleine */
     if (l->size+2 >= l->memory_size)
-        adjustMemorySizeList(l, l->memory_size + 8);
+        adjustMemorySizeList(l, l->memory_size + MEMORY_STEP);
 
     /* Ajout de la valeur */
     l->tab[l->size] = v;
@@ -135,7 +135,7 @@ bool searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2)) {
 }
 
 
-bool equal_state(Action* e1, Action* e2) {
+bool equal_state(State* e1, State* e2) {
     return equalState(*((State*)e1), *((State*)e2));
 }
 

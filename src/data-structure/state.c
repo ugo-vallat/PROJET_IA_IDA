@@ -9,11 +9,16 @@
 void findMoves(State e, Move* moves){
     Move m;
     int moves_iterator = 0;
+    int top_src; /* hauteur de la pisque source */
     for(int i=0; i<4; i++){
-        if (e.matrix[i][0] != 0)
+        /* lecture top */
+        top_src = e.matrix[i][0];
+        /* si la pique n'est pas vide */
+        if (top_src != 0) 
         for(int j = 0; j < 4; j++){
+            /* si la pique destination n'est pas pleine et n'est pas la pique source */
             if (e.matrix[j][0] != 3 && j != i ){
-                m.id = e.matrix[i][e.matrix[i][0]];
+                m.id = e.matrix[i][top_src];
                 m.weight = 1;
                 m.stem_src = i;
                 m.stem_dst = j;
@@ -42,17 +47,17 @@ Action applyMove(State s, Move m){
 }
 
 bool stateIsGoal(State s, State but){
-    if (equalState(s,but)){
-        return true;
-    }
-    else{
-        return false;
-    }
+    return equalState(s,but);
 }
 
 bool equalState(State s1, State s2){
+    /* comparer la taille des colonnes */
+    for(unsigned i = 0; i < 4; i++) //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if(s1.matrix[i][0] != s2.matrix[i][0])
+            return false;
+    /* comparer les éléments dans les colonnes */
     for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
+        for (int j = 1; j < s1.matrix[i][0]; j++) {
             if (s1.matrix[i][j] != s2.matrix[i][j]) {
                 return false;
             }
@@ -61,15 +66,15 @@ bool equalState(State s1, State s2){
     return true;
 }
 
-void stateOpPoss(State s, int *nb_move, Action* action_possibles){
+void stateFindNextActions(State s, int *nb_move, Action* action_possibles){
     Move moves_tab[9];
     *nb_move = 0;
     findMoves(s, moves_tab);
     for (int i = 0 ; i < 9; i++) {
       if (moves_tab[i].id != -1){
+        action_possibles[i] = applyMove(s,moves_tab[i]); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         (*nb_move)++;
       }
-      action_possibles[i] = applyMove(s,moves_tab[i]);
     }
 }
 
@@ -188,9 +193,17 @@ char vtc(int v) {
 }
 
 void displayState(State s){
+#ifdef DEBUG
+    for(int i = 3; i >= 1; i--)
+        printf("┃ %c %c %c %c ┃\n", vtc(s.matrix[0][i]), vtc(s.matrix[1][i]), vtc(s.matrix[2][i]), vtc(s.matrix[3][i]));
+    printf("┠─────────┨\n");
+    printf("┃ %d %d %d %d ┃\n", s.matrix[0][0],s.matrix[1][0],s.matrix[2][0],s.matrix[3][0]);
+    printf("┖─────────┚\n");
+#else
     for(int i = 3; i >= 1; i--)
         printf("┃ %c %c %c %c ┃\n", vtc(s.matrix[0][i]), vtc(s.matrix[1][i]), vtc(s.matrix[2][i]), vtc(s.matrix[3][i]));
     printf("┖─────────┚\n");
+#endif
 }
 
 void displayAction(Action *a) {

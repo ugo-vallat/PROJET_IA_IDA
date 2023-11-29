@@ -7,6 +7,8 @@
 #include "state.h"
 #include "utils.h"
 
+#define MEMORY_STEP 64
+
 /*------------------------------------------------------------------*/
 /*                        STRUCTURE LIST                            */
 /*------------------------------------------------------------------*/
@@ -102,7 +104,7 @@ Action* listGet(List *l, unsigned i);
  */
 bool searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2));
 
-bool equal_state(Action* e1, Action* e2);
+bool equal_state(State* e1, State* e2);
 
 bool equal_action(Action* e1, Action* e2);
 

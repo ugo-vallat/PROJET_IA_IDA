@@ -3,6 +3,18 @@
 #include "utils.h"
 #include "stdbool.h"
 
+
+
+/**
+ * @brief Définition de la structure état représentant l'état du jeux à un instant (les positions de 
+ * pions)
+ *      nbPion| pions (de bas en haut)
+ * pic0 [  3  , 1 , 2 , 3 ]     3 6
+ * pic1 [  3  , 4 , 5 , 6 ] --> 2 5   9
+ * pic2 [  1  , 7 ,   ,   ]     1 4 7 8
+ * pic3 [  2  , 8 , 9 ,   ]     =======
+ * 
+ */
 typedef struct s_state {
     int matrix[4][4];
 }State;
@@ -28,8 +40,11 @@ typedef struct s_action{
     State after;  /* Etat après déplacement */
 }Action;
 
+
 void displayState(State e);
+
 void displayMove(Move m);
+
 void displayAction(Action *a);
 
 
@@ -75,7 +90,7 @@ bool equalState(State s1, State s2);
  * @return res Tableau des mouvement-etats possibles
  * @param nb_move Nombre de mouvement-etats possibles
  */
- void stateOpPoss(State s, int *nb_move, Action* action_possibles);
+ void stateFindNextActions(State s, int *nb_move, Action* action_possibles);
 
 /**
  * @brief Test si un coup est valide (respect des prédicats)

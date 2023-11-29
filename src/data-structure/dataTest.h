@@ -1,6 +1,7 @@
 #ifndef __DATATEST_H__
 #define __DATATEST_H__
 #include "utils.h"
+#include "state.h"
 
 
 /**
