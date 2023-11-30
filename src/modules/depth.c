@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "depth.h"
 #include <unistd.h>
+#include <time.h>
 #include "modules_utils.h"
 #include "../data-structure/stack.h"
 #include "../data-structure/list.h"
@@ -125,9 +126,18 @@ ResSearch* search_depth(State initial_state, State goal, unsigned max_depth) {
     Action *act = createAction(state, mv, initial_state);
     listAdd(buff, act);
 
+
+    /* lancement du timer */
+    clock_t start, end;
+    start = clock();
+    
     /* recherche du chemin */
     res->found = search_depth_main(buff, done, path, goal, max_depth, 
         &(res->nb_state_created), &(res->nb_state_processed), &(res->nb_ite));
+    
+    /* fin du timer */
+    end = clock();
+    res->time = ((double) (end - start)) / CLOCKS_PER_SEC;
 
     /* récupérations du chemin */
     res->size_path = listSize(path) -1;

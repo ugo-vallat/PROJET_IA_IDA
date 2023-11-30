@@ -39,6 +39,7 @@ void displayResSearch(ResSearch *res) {
     printf(" ┃ Nombre itérations  : %u\n", res->nb_ite);
     printf(" ┃ Noeuds créés       : %u\n", res->nb_state_created);
     printf(" ┃ Noeuds explorés    : %u\n", res->nb_state_processed);
+    printf(" ┃ Temps d'exécution  : %f\n", res->time);
     if(!res->found) return;
     printf(" ┃ Taille du chemin   : %d\n", res->size_path);
     printf(" ┃ Coût               : %d\n", res->cost);
@@ -104,6 +105,7 @@ ResSearch* createResSearch(Algo algo, unsigned size_path_max) {
     res->nb_state_processed = 0;
     res->path = malloc(sizeof(Action)*size_path_max);
     res->size_path = 0;
+    res->time = 0;
     return res;
 }
 

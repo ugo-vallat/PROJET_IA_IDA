@@ -21,6 +21,7 @@ struct s_result_search {
     unsigned nb_ite;    /* nombre d'itérations */
     unsigned nb_state_created;   /* Nombre d'états créés */
     unsigned nb_state_processed; /* Nombre d'états explorés */
+    double time;        /* temps d'exécution */
 };
 
 /*
