@@ -32,11 +32,15 @@ main : $(OBJ) $(OBJDIR)/main.o $(OBJDIR)/dataTest.o | create_bin_dir
 
 
 # compilation des test
+test_stask : tstack
+
 test_list : tlist
 
 test_state : tstate
 
 test_depth : tdepth
+
+test_ida : tida
 
 t% : $(OBJDIR)/test_%.o $(OBJDIR)/dataTest.o $(OBJ) | create_bin_dir
 	$(CC) -o $(BINDIR)/$@ $^ $(CFLAGS) -DDEBUG
