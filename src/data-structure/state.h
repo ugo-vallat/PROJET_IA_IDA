@@ -28,6 +28,7 @@ typedef struct s_move {
     int weight;     /* poids du coup  */
     int stem_src;   /* tige source. Pre : 0 <= p_src <= 3 */
     int stem_dst;   /* tige destination. Pre : 0 <= p_dst <= 3 */
+    int mouv_index ;/* numéro du mouvement (1er, 2eme...)*/
 } Move;
 
 /**

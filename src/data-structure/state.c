@@ -22,6 +22,7 @@ void findMoves(State e, Move* moves){
                 m.weight = 1;
                 m.stem_src = i;
                 m.stem_dst = j;
+                m.mouv_index = 0;
                 moves[moves_iterator] = m;
                 moves_iterator++;
             }
@@ -52,12 +53,12 @@ bool stateIsGoal(State s, State but){
 
 bool equalState(State s1, State s2){
     /* comparer la taille des colonnes */
-    for(unsigned i = 0; i < 4; i++) //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    for(unsigned i = 0; i < 4; i++)
         if(s1.matrix[i][0] != s2.matrix[i][0])
             return false;
     /* comparer les éléments dans les colonnes */
     for (int i = 0; i < 4; i++) {
-        for (int j = 1; j < s1.matrix[i][0]; j++) {
+        for (int j = 1; j < (s1.matrix[i][0]+1); j++) {
             if (s1.matrix[i][j] != s2.matrix[i][j]) {
                 return false;
             }
@@ -67,12 +68,12 @@ bool equalState(State s1, State s2){
 }
 
 void stateFindNextActions(State s, int *nb_move, Action* action_possibles){
-    Move moves_tab[9];
+    Move moves_tab[12];
     *nb_move = 0;
     findMoves(s, moves_tab);
     for (int i = 0 ; i < 9; i++) {
       if (moves_tab[i].id != -1){
-        action_possibles[i] = applyMove(s,moves_tab[i]); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        action_possibles[i] = applyMove(s,moves_tab[i]);
         (*nb_move)++;
       }
     }
@@ -80,7 +81,7 @@ void stateFindNextActions(State s, int *nb_move, Action* action_possibles){
 
 bool isMovePossible(State s, Move m){
     bool test = true;
-    if (s.matrix[m.stem_src][0] > 0 || s.matrix[m.stem_dst][0] < 3){
+    if (s.matrix[m.stem_src][0] <= 0 || s.matrix[m.stem_dst][0] > 3){
       return false;
     }
     return test;
@@ -121,6 +122,7 @@ void copyMove(Move *src, Move *dst) {
     dst->stem_src = src->stem_src;
     dst->stem_dst = src->stem_dst;
     dst->weight = src->weight;
+    dst->mouv_index = src->mouv_index;
 }
 
 void copyAction(Action *src, Action *dst) {
@@ -168,7 +170,7 @@ void testStemValid(int stem, char* fun_name) {
 
 
 void displayMove(Move m){
-  printf("(pic depart = %d , pic arrivee = %d , valeur deplacee = %d)\n", m.stem_src,m.stem_dst,m.id);
+  printf("(pic depart = %d , pic arrivee = %d , valeur deplacee = %d, index = %d)\n", m.stem_src,m.stem_dst,m.id, m.mouv_index);
 }
 
 /**
@@ -210,7 +212,7 @@ void displayAction(Action *a) {
     Move m = a->move;
     State before = a->before;
     State after = a->after;
-    printf("_____(%d =%d=> %d)_____<%d>\n", m.stem_src, m.id, m.stem_dst, m.weight);
+    printf("_____(%d =%d=> %d)_____<w:%d><i:%d>\n", m.stem_src, m.id, m.stem_dst, m.weight, m.mouv_index);
     for(int i = 3; i >= 1; i--) {
         printf("|%c %c %c %c| ", vtc(before.matrix[0][i]), vtc(before.matrix[1][i]), vtc(before.matrix[2][i]), vtc(before.matrix[3][i]));
         printf(" |%c %c %c %c|\n", vtc(after.matrix[0][i]), vtc(after.matrix[1][i]), vtc(after.matrix[2][i]), vtc(after.matrix[3][i]));

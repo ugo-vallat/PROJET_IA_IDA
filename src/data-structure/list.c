@@ -126,13 +126,31 @@ Action* listGet(List *l, unsigned i) {
 }
 
 
-bool searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2)) {
+int searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2)) {
     testArgNull(l, "searchElem");
     for(unsigned i = 0; i < l->size; i++)
         if(equal(e, l->tab[i])) 
-            return true;
-    return false;
+            return i;
+    return -1;
 }
+
+Action* listRemove(List *l, unsigned i) {
+    testArgNull(l, "listRemove");
+    if(i >= l->size)
+        error("[in listRemove] Invalide position", EXIT_FAILURE);
+    
+    /* récupérer l'élément à supprimer */
+    Action *save = l->tab[i];
+
+    /* supprimer l'élément de la liste */
+    for(unsigned c = i ; c < l->size-1; c++)
+        l->tab[c] = l->tab[c+1];
+    l->size--;
+
+    /* renvoyer l'élément */
+    return save;
+}
+
 
 
 bool equal_state(State* e1, State* e2) {

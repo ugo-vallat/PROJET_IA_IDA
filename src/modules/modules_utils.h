@@ -13,6 +13,7 @@ typedef struct s_result_search ResSearch;
 
 struct s_result_search {
     Algo algo;          /* type d'algo utilisé */
+    unsigned depth;     /* profondeur de recherce */
     bool found;         /* true si chemin trouvé */
     unsigned size_path; /* taille du chemin (nombre de mouvements)*/
     Move *path;         /* chemin (liste de mouvements)*/

@@ -1,7 +1,6 @@
 #ifndef __DATATEST_H__
 #define __DATATEST_H__
-#include "utils.h"
-#include "state.h"
+#include "../src/data-structure/state.h"
 
 
 /**

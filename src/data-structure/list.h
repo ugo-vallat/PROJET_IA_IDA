@@ -94,15 +94,24 @@ Action* listLast(List *l);
  */
 Action* listGet(List *l, unsigned i);
 
+/**
+ * @brief Enlève l'élément à l'indice i
+ * 
+ * @param l liste
+ * @param i indice de l'élément à retirer
+ * @return élément supprimé
+ */
+Action* listRemove(List *l, unsigned i);
+
 
 /**
  * @brief Cherheche l'element dans la liste
  * 
  * @param l Liste
  * @param s Element à chercher
- * @return true si trouvé, false sinon
+ * @return position de lélement, -1 si pas trouvé
  */
-bool searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2));
+int searchElem(List *l, Action* e, bool (*equal)(Action* e1, Action* e2));
 
 bool equal_state(State* e1, State* e2);
 

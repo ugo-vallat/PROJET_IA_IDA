@@ -30,24 +30,25 @@ char* algoToString(Algo a) {
 
 void displayResSearch(ResSearch *res) {
     char* algo;
-    printf("\n========== RESULTAT ========== :\n");
+    printf("\n ┏━━━━━━━━━━━━━━━━━━━━ RESULTAT :\n");
     algo = algoToString(res->algo);
-    printf(" Algo               : %s\n", algo);
+    printf(" ┃ Algo               : %s\n", algo);
     free(algo);
-    printf(" Chemin trouvé      : %s\n", (res->found?"oui":"non"));
-    printf(" Nombre itérations  : %u\n", res->nb_ite);
-    printf(" Noeuds créés       : %u\n", res->nb_state_created);
-    printf(" Noeuds explorés    : %u\n", res->nb_state_processed);
+    printf(" ┃ Depth              : %d\n", res->depth);
+    printf(" ┃ Chemin trouvé      : %s\n", (res->found?"oui":"non"));
+    printf(" ┃ Nombre itérations  : %u\n", res->nb_ite);
+    printf(" ┃ Noeuds créés       : %u\n", res->nb_state_created);
+    printf(" ┃ Noeuds explorés    : %u\n", res->nb_state_processed);
     if(!res->found) return;
-    printf(" Taille du chemin   : %d\n", res->size_path);
-    printf(" Coût               : %d\n", res->cost);
-    printf(" Chemin             :\n");
+    printf(" ┃ Taille du chemin   : %d\n", res->size_path);
+    printf(" ┃ Coût               : %d\n", res->cost);
+    printf(" ┃ Chemin             :\n");
     Move m;
     for(unsigned i = 0; i < res->size_path; i++) {
         m = res->path[i];
-        printf("    %d : (%d -> %d) - %d\n", m.id, m.stem_src, m.stem_dst, m.weight);
+        printf(" ┃   %d-  %d : (%d -> %d) - %d\n",m.mouv_index, m.id, m.stem_src, m.stem_dst, m.weight);
     }
-    printf("============================== \n\n");
+    printf(" ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n\n");
 }
 
 void loadingBarDepth(int size, int max, int ite) {
@@ -64,12 +65,19 @@ void showGameAnimation(ResSearch *res, State init_state) {
     if(!res->found) return;
     __useconds_t time_wait = 1000000;
     displayState(init_state);
+
+    /* si chemin vide on arrête */
+    if(res->size_path <= 0) return;
+
+    /* affichage premier mouvement  */
     printf("\033[4A\r");
     usleep(time_wait);
     Action act = applyMove(init_state, res->path[0]);
     displayState(act.after);
     printf("\033[4A\r");
     usleep(time_wait);
+
+    /* affichage mouvements suivants */
     for(unsigned i = 1; i < res->size_path; i++) {
         act = applyMove(act.after, res->path[i]);
         displayState(act.after);
@@ -88,6 +96,7 @@ void showGameAnimation(ResSearch *res, State init_state) {
 ResSearch* createResSearch(Algo algo, unsigned size_path_max) {
     ResSearch *res = malloc(sizeof(ResSearch));
     res->algo = algo;
+    res->depth = 0;
     res->cost = 0;
     res->found = false;
     res->nb_ite = 0;
