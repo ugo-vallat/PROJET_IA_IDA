@@ -1,18 +1,13 @@
-#include <signal.h>
-#include <execinfo.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "data-structure/state.h"
-#include "data-structure/list.h"
-#include "data-structure/stack.h"
 #include "modules/modules_utils.h"
 #include "modules/depth.h"
 #include "modules/ida.h"
 #include "modules/ida_param.h"
 #include "../test/dataTest.h"
 #include "modules/modules_utils.h"
-#include "data-structure/utils.h"
 
 
 Algo getAlgoFromUser() {

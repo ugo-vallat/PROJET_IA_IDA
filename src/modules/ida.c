@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "depth.h"
-#include "../data-structure/stack.h"
 #include "../data-structure/list.h"
 #include "../data-structure/state.h"
 #include "modules_utils.h"

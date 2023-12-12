@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <time.h>
 #include "modules_utils.h"
-#include "../data-structure/stack.h"
 #include "../data-structure/list.h"
 #include "../data-structure/state.h"
 
