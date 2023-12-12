@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 
-void erreur(char* msg, int exit_val) {
+void error(char* msg, int exit_val) {
     if(errno)
         perror(msg);
     else

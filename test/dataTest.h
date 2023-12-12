@@ -3,14 +3,32 @@
 #include "../src/data-structure/state.h"
 
 
-/**
- * @brief Mets à jour les états fournis pour qu'ils correspondent au jeux de test voulu
- * 
- * @param id Numéro du jeu de test
- * @param ed Nom de l'état initial
- * @param ef Nom de l'état final
- */
-void getEtatTest(int id, State *ed, State *ef);
+/* Association des tests : 
+    start -> end
+    1     -> 1,2
+    2     -> 3,4,5,6
+    3     -> 7
+    4     -> 8
+    5     -> 9
+    6     -> 10,11,12,13,14
+    7     -> 15
+*/
 
+/**
+ * @brief Met dans start l'état départ associé à l'id
+ * 
+ * @param id id de l'état de départ
+ * @param start Etat à remplir
+ */
+void getEtatStart(int id, State *start);
+
+
+/**
+ * @brief Met dans end l'état d'arrivée associé à l'id
+ * 
+ * @param id id de l'état d'arrivée
+ * @param end Etat à remplir
+ */
+void getEtatEnd(int id, State *end);
 
 #endif

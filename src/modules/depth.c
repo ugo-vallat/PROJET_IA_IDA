@@ -19,17 +19,17 @@ State emptyState = {{
 
 void addToPath(List* path, Action* act) {
     /* si à la racine */
-    if(act->move.mouv_index == -1) {
+    if(act->move.mouv_index == 0) {
         listAdd(path, act);
         return;
     }
 
     /* cherche le parent de act */
-    while(!listEmpty(path) && !equalState(act->before, listLast(path)->after))
+    while(!listIsEmpty(path) && !equalState(act->before, listLast(path)->after))
         listPop(path);
 
     /* si auncun parent : echec */
-    if(listEmpty(path)) {
+    if(listIsEmpty(path)) {
         error("Echec ajout au chemin", EXIT_FAILURE);
     }
 
@@ -51,7 +51,7 @@ bool search_depth_main(List* buff, List* done, List *path, State goal, unsigned 
     unsigned nb_processed = 0;  /* nombre d'états explorés */
     unsigned nb_ite = 0;            /* nombre d'itérations */
 
-    while(!found && !listEmpty(buff) ) { //&& !stackOverflow(buff)
+    while(!found && !listIsEmpty(buff) ) { //&& !stackOverflow(buff)
         /* information itération */
         nb_ite++;
         nb_processed++;
@@ -115,14 +115,14 @@ ResSearch* search_depth(State initial_state, State goal, unsigned max_depth) {
     res->depth = max_depth;
 
     /* initialisation outils */
-    List *buff = createList(STACK_MAX_SIZE);
-    List* path = createList(max_depth+4);
-    List* done = createList(LIST_DONE_SIZE);
+    List *buff = createList(STACK_MAX_SIZE);    /* noeuds à explorer */
+    List* path = createList(max_depth+4);       /* chemin actuel */
+    List* done = createList(LIST_DONE_SIZE);    /* liste des noeuds vus */
 
     /* création racine */
     State state; 
     copyState(&emptyState, &state);
-    Move mv = {0,0,0,0,-1};
+    Move mv = {0,0,0,0,0,0};
     Action *act = createAction(state, mv, initial_state);
     listAdd(buff, act);
 
@@ -147,11 +147,10 @@ ResSearch* search_depth(State initial_state, State goal, unsigned max_depth) {
     }
 
     /* libération de la mémoire */
-    while(!listEmpty(done))
+    while(!listIsEmpty(done))
         deleteAction(listPop(done));
-    while(!listEmpty(buff)) {
+    while(!listIsEmpty(buff)) {
         deleteAction(listPop(buff));
-        // stackPop(buff);
     }
     deleteList(&path);
     deleteList(&buff);

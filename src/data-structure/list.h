@@ -66,7 +66,14 @@ Action* listPop(List *l);
  * @pre l != NULL
  * @return true si vide, false sinon
  */
-bool listEmpty(List *l);
+bool listIsEmpty(List *l);
+
+/**
+ * @brief vide la liste et libère la mémoire alloée pour les actions
+ * 
+ * @param l Liste à vider
+ */
+void listClear(List* l);
 
 /**
  * @brief Renvoie la taille de la liste (position + 1 du dernier élément)

@@ -16,6 +16,7 @@ struct s_result_search {
     unsigned depth;     /* profondeur de recherce */
     bool found;         /* true si chemin trouvé */
     unsigned size_path; /* taille du chemin (nombre de mouvements)*/
+    State initial_state;/* Etat initial */
     Move *path;         /* chemin (liste de mouvements)*/
     int cost;           /* Cout du chemin */
     unsigned nb_ite;    /* nombre d'itérations */

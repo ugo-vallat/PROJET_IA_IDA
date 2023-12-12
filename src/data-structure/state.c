@@ -23,6 +23,7 @@ void findMoves(State e, Move* moves){
                 m.stem_src = i;
                 m.stem_dst = j;
                 m.mouv_index = 0;
+                m.g_value = 1;
                 moves[moves_iterator] = m;
                 moves_iterator++;
             }
@@ -87,6 +88,13 @@ bool isMovePossible(State s, Move m){
     return test;
 }
 
+void stateEmpty(State* s) {
+    for(unsigned i = 0; i < 4; i++)
+        for(unsigned j = 0; j < 4; j++)
+            s->matrix[i][j] = 0;
+}
+
+
 /*
     ================
     ===  ACTION  ===
@@ -123,6 +131,7 @@ void copyMove(Move *src, Move *dst) {
     dst->stem_dst = src->stem_dst;
     dst->weight = src->weight;
     dst->mouv_index = src->mouv_index;
+    dst->g_value = src->g_value;
 }
 
 void copyAction(Action *src, Action *dst) {
@@ -170,7 +179,8 @@ void testStemValid(int stem, char* fun_name) {
 
 
 void displayMove(Move m){
-  printf("(pic depart = %d , pic arrivee = %d , valeur deplacee = %d, index = %d)\n", m.stem_src,m.stem_dst,m.id, m.mouv_index);
+  printf("(pic depart = %d , pic arrivee = %d , valeur deplacee = %d, index = %d, weight = %d, g_value = %d)\n", 
+    m.stem_src,m.stem_dst,m.id, m.mouv_index, m.weight, m.g_value);
 }
 
 /**

@@ -26,6 +26,7 @@ typedef struct s_state {
 typedef struct s_move {
     int id;         /* numéro(id) de l'anneau. Pre : 1 <= id <= 9*/
     int weight;     /* poids du coup  */
+    int g_value;    /* poids du chemin jusqu'à l'état dest */
     int stem_src;   /* tige source. Pre : 0 <= p_src <= 3 */
     int stem_dst;   /* tige destination. Pre : 0 <= p_dst <= 3 */
     int mouv_index ;/* numéro du mouvement (1er, 2eme...)*/
@@ -40,7 +41,6 @@ typedef struct s_action{
     Move move;    /* Déplacement */
     State after;  /* Etat après déplacement */
 }Action;
-
 
 void displayState(State e);
 
@@ -137,6 +137,12 @@ Action* createAction(State before, Move move, State after);
  */
 void deleteAction(Action* act);
 
+/**
+ * @brief Rempli l'état de 0
+ * 
+ * @param s Etat à remplir
+ */
+void stateEmpty(State* s);
 
 /**
  * @brief Copy les information de src dans dst

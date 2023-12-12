@@ -73,6 +73,3 @@ clean:
 	@rm -rf $(BINDIR)
 	@rm -rf $(OBJDIR)
 
-# main2 : $(OBJ) $(OBJDIR)/main2.o
-# 	@if [ ! -d "$(BINDIR)" ]; then mkdir $(BINDIR); fi
-# 	$(CC) $^ -o $(BINDIR)/$@ $(CFLAGS) 

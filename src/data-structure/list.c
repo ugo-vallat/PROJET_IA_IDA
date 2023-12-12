@@ -100,9 +100,14 @@ Action* listPop(List *l) {
 
 
 
-bool listEmpty(List *l) {
+bool listIsEmpty(List *l) {
     testArgNull(l, "listEmpty");
     return l->size == 0;
+}
+
+void listClear(List* l){
+    while (!listIsEmpty(l))
+        free(listPop(l));
 }
 
 

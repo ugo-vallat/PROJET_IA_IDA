@@ -6,11 +6,14 @@
 #include "modules_utils.h"
 #include "../data-structure/state.h"
 #include "../data-structure/list.h"
+#include "ida_param.h"
+
+
 #define LIST_DONE_SIZE 512
 
 int min(int a, int b);
 
-ResSearch* ida(State initial_state, State goal);
+ResSearch* ida(State initial_state, State goal_gived, fun_heuristic fun_h, fun_move_cost fun_mc);
 
 unsigned int fEtat(State init, int g);
 
@@ -20,7 +23,7 @@ bool bounded_depth(List* buff, List* done, List *path,int g, unsigned *created, 
 
 void addToPath_ida(List* path, Action* act);
 
-int cost_movement(State s);
+int cost_movement(Move mv);
 
 
 

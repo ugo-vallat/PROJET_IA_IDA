@@ -2,7 +2,107 @@
 #include "../src/data-structure/state.h"
 #include <stdlib.h>
 
-State m1_start = {
+/* Association des tests : 
+    start -> end
+    1     -> 1,2
+    2     -> 3,4,5,6
+    3     -> 7
+    4     -> 8
+    5     -> 9
+    6     -> 10,11,12,13,14
+    7     -> 15
+*/
+
+
+/*
+    ===================
+    === TESTS DU TP ===
+    ===================
+*/
+
+
+State start_1 = {
+    {
+    {2,3,2,0},
+    {1,1,0,0},
+    {3,6,5,4},
+    {3,9,8,7}
+    }
+};  
+
+State end_1 = {
+    {
+    {3,3,2,1},
+    {0,0,0,0},
+    {3,6,5,4},
+    {3,9,8,7}
+    }
+};
+
+State end_2 = {
+    {
+    {3,3,2,1},
+    {3,7,8,9},
+    {3,6,5,4},
+    {0,0,0,0}
+    }
+};
+
+
+State start_2 = {
+    {
+    {3,3,2,1},
+    {3,6,5,4},
+    {3,9,8,7},
+    {0,0,0,0}
+    }
+};
+
+State end_3 = {
+    {
+    {3,3,2,7},
+    {3,6,4,8},
+    {3,9,5,1},
+    {0,0,0,0}
+    }
+};
+
+State end_4 = {
+    {
+    {3,3,1,2},
+    {3,6,4,5},
+    {3,9,7,8},
+    {0,0,0,0}
+    }
+};
+
+State end_5 = {
+    {
+    {3,3,2,8},
+    {2,6,4,0},
+    {3,9,7,5},
+    {1,1,0,0}
+    }
+};
+
+State end_6 = {
+    {
+    {3,4,7,1},
+    {3,5,8,2},
+    {3,6,9,3},
+    {0,0,0,0}
+    }
+};
+
+
+/*
+    ====================
+    === AUTRES TESTS ===
+    ====================
+*/
+
+
+State start_3 = {
     {
     {0,0,0,0},
     {3,1,2,3},
@@ -11,7 +111,7 @@ State m1_start = {
     }
 };
 
-State m1_end = {
+State end_7 = {
     {
     {3,6,3,9},
     {2,1,2,0},
@@ -20,7 +120,7 @@ State m1_end = {
     }
 };
 
-State m2_start= {
+State start_4 = {
     {
     {3,1,5,9},
     {2,2,6,0},
@@ -29,7 +129,7 @@ State m2_start= {
     }
 };
 
-State m2_end = {
+State end_8 = {
     {
     {3,1,5,9},
     {2,2,6,0},
@@ -40,7 +140,7 @@ State m2_end = {
 
 
 
-State m3_start = {
+State start_5 = {
     {
     {3,1,2,3},
     {3,4,5,6},
@@ -49,7 +149,7 @@ State m3_start = {
     }
 };  
 
-State m3_end = {
+State end_9 = {
     {
     {3,8,1,7},
     {2,2,6,0},
@@ -59,7 +159,7 @@ State m3_end = {
 };
 
 
-State m4_start = {
+State start_6 = {
     {
     {3,1,2,3},
     {3,4,5,6},
@@ -68,7 +168,7 @@ State m4_start = {
     }
 }; 
 
-State m4_end_1 = {
+State end_10 = {
     {
     {2,1,2,0},
     {3,4,5,6},
@@ -77,7 +177,7 @@ State m4_end_1 = {
     }
 };
 
-State m4_end_2 = {
+State end_11 = {
     {
     {1,1,0,0},
     {3,4,5,6},
@@ -86,7 +186,7 @@ State m4_end_2 = {
     }
 };
 
-State m4_end_3 = {
+State end_12 = {
     {
     {2,1,9,0},
     {3,4,5,6},
@@ -95,7 +195,7 @@ State m4_end_3 = {
     }
 };
 
-State m4_end_4 = {
+State end_13 = {
     {
     {3,1,9,6},
     {2,4,5,0},
@@ -105,7 +205,7 @@ State m4_end_4 = {
 };
 
 
-State m4_end_5 = {
+State end_14 = {
     {
     {3,1,9,6},
     {2,4,5,0},
@@ -115,7 +215,7 @@ State m4_end_5 = {
 };
 
 
-State m5_start = {
+State start_7 = {
     {
     {3,1,2,3},
     {3,4,5,6},
@@ -124,7 +224,7 @@ State m5_start = {
     }
 };  
 
-State m5_end = {
+State end_15 = {
     {
     {1,6,0,0},
     {3,9,2,1},
@@ -159,9 +259,9 @@ State m5_end = {
 
 >> 5
 {3,1,2,6},
-{3,9,0,0},
-{3,7,8,0},
-{0,3,5,4}
+{1,9,0,0},
+{2,7,8,0},
+{3,3,5,4}
 
 >> 6
 {3,1,2,0},
@@ -169,10 +269,10 @@ State m5_end = {
 {3,7,8,6},
 {0,3,5,4}
 >> 7
-{3,1,0,0},
-{3,9,2,0},
+{1,1,0,0},
+{2,9,2,0},
 {3,7,8,6},
-{0,3,5,4}
+{3,3,5,4}
 >> 8
 {0,0,0,0},
 {3,9,2,1},
@@ -196,38 +296,84 @@ State m5_end = {
 */
 
 
+
 int stateToCopy[4][4];
-
-
-
-void getEtatTest(int id, State *ed, State *ef){
-    switch (id)
-    {
-    case 1:
-        *ed = m1_start;
-        *ef = m1_end;
-        break;
-    case 2:
-        *ed = m2_start;
-        *ef = m2_end;
-        break;
-    case 3:
-        *ed = m3_start;
-        *ef = m3_end;
-        break;
-    case 4:
-        *ed = m4_start;
-        *ef = m4_end_5;
-        break;
-    case 5:
-        *ed = m5_start;
-        *ef = m5_end;
-        break;
-    default:
-        error("Jeu de test inconnu : 1 -> 5\n", EXIT_FAILURE);
-        break;
-    }
- }
-
-
  
+
+void getEtatStart(int id, State *start) {
+    switch (id) 
+    {
+        case 1:
+            *start = start_1;
+            break;
+        case 2:
+            *start = start_2;
+            break;
+        case 3:
+            *start = start_3;
+            break;
+        case 4:
+            *start = start_4;
+            break;
+        case 5:
+            *start = start_5;
+            break;
+        case 6:
+            *start = start_6;
+            break;
+        case 7:
+            *start = start_7;
+            break;
+    }
+}
+
+void getEtatEnd(int id, State *end) {
+    switch (id) 
+    {
+        case 1:
+            *end = end_1;
+            break;
+        case 2:
+            *end = end_2;
+            break;
+        case 3:
+            *end = end_3;
+            break;
+        case 4:
+            *end = end_4;
+            break;
+        case 5:
+            *end = end_5;
+            break;
+        case 6:
+            *end = end_6;
+            break;
+        case 7:
+            *end = end_7;
+            break;
+        case 8:
+            *end = end_8;
+            break;
+        case 9:
+            *end = end_9;
+            break;
+        case 10:
+            *end = end_10;
+            break;
+        case 11:
+            *end = end_11;
+            break;
+        case 12:
+            *end = end_12;
+            break;
+        case 13:
+            *end = end_13;
+            break;
+        case 14:
+            *end = end_14;
+            break;
+        case 15:
+            *end = end_15;
+            break;
+    }
+}

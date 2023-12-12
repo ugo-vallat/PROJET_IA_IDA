@@ -6,19 +6,15 @@
 #include "../data-structure/list.h"
 #include "../data-structure/state.h"
 #include "modules_utils.h"
+#include "ida_param.h"
 
+State init_state;
 State goal;
-State solution;
 unsigned bound;
+fun_heuristic heuristic;
+fun_move_cost move_cost;
 int infinite = 999999999;
 
-
-State emptyStateida = {{
-        {0,0,0,0},
-        {0,0,0,0},
-        {0,0,0,0},
-        {0,0,0,0}
-    }};
 
 
 int min(int a, int b) {
@@ -26,72 +22,74 @@ int min(int a, int b) {
 }
 
 
-int heuristic(State init){
-    int sums = 0;
-    for (int i = 0; i < 4; i++)
-    {
-       int max_depth;
-       for(int j = init.matrix[i][0]; j> 1 ; j--){
-            max_depth = j;
-            if (init.matrix[i][j] != goal.matrix[i][j]){
-                sums+= max_depth;
-                break;
-            }
-       } 
-    }
-    
-    return sums;
-}
-
-
 
 unsigned int fEtat(State init, int g){
-    return g + heuristic(init);
-}
-
-int cost_movement(State s){
-    return 1;
+    return g + heuristic(init, goal);
 }
 
 void addToPath_ida(List* path, Action* act) {
     /* si à la racine */
-    if(act->move.mouv_index == -1) {
-        listAdd(path, act);
+    if(act->move.mouv_index == 0) {
+        listAdd(path, createAction(act->before, act->move, act->after));
         return;
     }
 
     /* cherche le parent de act */
-    while(!listEmpty(path) && !equalState(act->before, listLast(path)->after))
-        listPop(path);
+    while(!listIsEmpty(path) && !equalState(act->before, listLast(path)->after))
+        free(listPop(path));
 
     /* si auncun parent : echec */
-    if(listEmpty(path)) {
+    if(listIsEmpty(path)) {
         error("Echec ajout au chemin", EXIT_FAILURE);
     }
 
     /* ajout au chemin */
-    listAdd(path, act);
+    listAdd(path, createAction(act->before, act->move, act->after));
 }
 
-
-bool bounded_depth(List* buff, List* done, List *path, int g, unsigned *created, unsigned *processed, unsigned *ite){
+/**
+ * @brief Applique IDA* pour un seuil ( @ref bound )
+ * 
+ * @param initial_state Etat de départ
+ * @param path_solution Chemin vers la solution (vide si non-trouvée)
+ * @param created Nombre de noeuds créés
+ * @param processed Nombre de noeuds explorés
+ * @param ite Nombre d'itérations 
+ * @return true si solution, false sinon
+ */
+bool bounded_depth(List **path_solution, unsigned *created, unsigned *processed, unsigned *ite){
+    /* initialisation des listes */
+    List* buff = createList(STACK_MAX_SIZE);    /* noeuds à explorer */
+    List* done = createList(LIST_DONE_SIZE);    /* liste des noeuds vus */
+    List* path = createList(bound+4);           /* chemin actuel */
+    /* gestion des actions */
     Action* cur;    /* etat en train d'être traité */
-    Action* next_actions = malloc(sizeof(Action)*16); /* actions depuis cur */
     Action tmp_action;
-    unsigned path_size;
+    Action* next_actions = malloc(sizeof(Action)*16); /* actions depuis cur */
     int nb_next_actions;
-    int newBound = infinite;
+
+    /* varibles locales suplémentaires */
+    unsigned path_size = 1;
+    unsigned newBound = infinite;
     int res_search;
+    bool found = false;
+    int f_value;
+
+    /* Ajout de la racine au buffer */
+    State state; 
+    stateEmpty(&state);
+    Move mv = {0,0,0,0,0,0};
+    listAdd(buff, createAction(state, mv, init_state));
 
     /* info du programme */
     unsigned nb_created = 0;     /* nombre d'états créés */
     unsigned nb_processed = 0;  /* nombre d'états explorés */
     unsigned nb_ite = 0;            /* nombre d'itérations */
 
-    while (!listEmpty(buff)){
+    while (!found && !listIsEmpty(buff)) {
         nb_ite++;
         nb_processed++;
-        loadingBarDepth(listSize(path), bound+1, nb_ite);
+        loadingBarDepth(path_size, bound+1, nb_ite);
 
         /* récupérer prochain élément */
         cur = listPop(buff);
@@ -101,18 +99,13 @@ bool bounded_depth(List* buff, List* done, List *path, int g, unsigned *created,
 
         /* ajouter au chemin */
         addToPath_ida(path, cur);
-        path_size = listSize(path); 
-
+        path_size = listSize(path);
+        
+        /* tester si but */
         if (equalState(cur->after, goal)) {
             /* fin */
-            solution = cur->after;
-            free(next_actions);
-            *created = nb_created;
-            *processed = nb_processed;
-            *ite = nb_ite; 
-            return true;
-        }
-        else if ( path_size < bound + 1) {
+            found = true;
+        } else { 
             /* récupérer les prochaines actions */
             stateFindNextActions(cur->after, &nb_next_actions, next_actions);
             nb_created+=nb_next_actions;
@@ -121,82 +114,77 @@ bool bounded_depth(List* buff, List* done, List *path, int g, unsigned *created,
             for(int i = 0; i < nb_next_actions; i++) {
                 tmp_action = next_actions[i];
                 tmp_action.move.mouv_index = path_size;
-                int new_g = g + cost_movement(tmp_action.after); // changer la fonction cost_movement si jamais on implémente les déplacement à différent couts
-
-                /* recherche recherche du nouveau état dans les états déjà traités  */
+                tmp_action.move.weight = move_cost(tmp_action.move); // changer la fonction cost_movement si jamais on implémente les déplacement à différent couts
+                tmp_action.move.g_value = cur->move.g_value + tmp_action.move.weight;
+                
+                /*calcul de f */
+                f_value = fEtat(tmp_action.after, tmp_action.move.g_value);
+                
+                /* recherche du nouveau état dans les états déjà traités  */
                 res_search = searchElem(done, &tmp_action, equal_action);
 
-                if(fEtat(tmp_action.after,new_g) <= bound && res_search == -1) {
+                if(f_value <= (int)bound && res_search == -1) {
                     /* si jamais rencontré */
                     listAdd(buff, createAction(tmp_action.before, tmp_action.move, tmp_action.after));
                 }
-                else {
-                    newBound = min(newBound,fEtat(tmp_action.after,new_g));
-                    nb_processed--;
+                else if(f_value > (int)bound) {
+                    newBound = min(newBound,f_value);
+                } else if (f_value <= (int)bound && res_search != -1) {
+                    if (listGet(done, res_search)->move.g_value > tmp_action.move.g_value) {
+                            /* si meilleur chemin */
+                            listAdd(buff, createAction(tmp_action.before, 
+                                tmp_action.move, tmp_action.after));
+                            deleteAction(listRemove(done, res_search));
+                            nb_processed--;
+                        }
                 }
             }
         }
-
-
     }
-
+    /* libération de la mémoire */
     free(next_actions);
-    *created = nb_created;
-    *processed = nb_processed;
-    *ite = nb_ite; 
+    listClear(buff); deleteList(&buff);
+    listClear(done); deleteList(&done);
 
-    if (newBound == infinite){
-        return true;
-    }
-    else {
-        bound = newBound;
-        return false;
-    }
+    /* mise à jour du seuil */
+    if(newBound <= bound)
+        error("newBound <= bound", EXIT_FAILURE);
+    bound = newBound;
 
-
-
+    /* renvoie des informations */
+    *created += nb_created;
+    *processed += nb_processed;
+    *ite += nb_ite;
+    if(!found) listClear(path);
+    *path_solution = path;
+    return found;
 }
 
 
 
-
-
-
-
-
-
-
-ResSearch* ida(State initial_state, State goal_gived){
-
-
-    /* initialisation outils */
-    List *buff = createList(STACK_MAX_SIZE);
-    List* done = createList(LIST_DONE_SIZE);
-    List* path = createList(bound+4);
+ResSearch* ida(State initial_state, State goal_gived, fun_heuristic fun_h, fun_move_cost fun_mc){
+    /* initialisation variables globales  */
+    heuristic = fun_h;
+    move_cost = fun_mc;
+    init_state = initial_state;
     goal = goal_gived;
-    int g = 0;
-
-    
-    /* création racine */
-    State state; 
-    copyState(&emptyStateida, &state);
-    Move mv = {0,0,0,0,-1};
-    Action *act = createAction(state, mv, initial_state);
-    listAdd(buff, act);
-    bound = fEtat(initial_state,g);
-
-    
+    bound = fEtat(initial_state,0);
 
    /* Initialisation structure résultat*/
-    ResSearch *res = createResSearch(IDA, bound+4);
+    ResSearch *res = createResSearch(IDA, 50);
+    List *path;
 
     /* lancement du timer */
     clock_t start, end;
     start = clock();
 
+    /* recherche tant que la solution n'est pas trouvée */
+    unsigned old_bound;
     while (!(res->found)){
-        res->found = bounded_depth(buff, done, path,g,
-        &(res->nb_state_created), &(res->nb_state_processed), &(res->nb_ite));
+        old_bound = bound;
+        /* lancement de ida */
+        printf("\n ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ seuil : %d\n", bound);
+        res->found = bounded_depth(&path, &(res->nb_state_created), &(res->nb_state_processed), &(res->nb_ite));
     }
 
     /* fin du timer */
@@ -209,26 +197,11 @@ ResSearch* ida(State initial_state, State goal_gived){
         copyMove(&(listGet(path, i)->move), &res->path[i-1]);
         res->cost += listGet(path, i)->move.weight;
     }
-
- /* libération de la mémoire */
-    while(!listEmpty(done))
-        deleteAction(listPop(done));
-    while(!listEmpty(buff)) {
-        deleteAction(listPop(buff));
-        // stackPop(buff);
-    }
-
+    listClear(path);
     deleteList(&path);
-    deleteList(&buff);
-    deleteList(&done);
-    res->depth = bound;
+    res->depth = old_bound;
 
-    if (solution.matrix != NULL){
-        return res;
-    }
-    //return fail;
-    return NULL;
-
+    return res;
 }
 
 

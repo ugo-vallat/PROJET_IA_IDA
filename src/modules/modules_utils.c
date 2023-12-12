@@ -103,6 +103,7 @@ ResSearch* createResSearch(Algo algo, unsigned size_path_max) {
     res->nb_ite = 0;
     res->nb_state_created = 0;
     res->nb_state_processed = 0;
+    stateEmpty(&(res->initial_state));
     res->path = malloc(sizeof(Action)*size_path_max);
     res->size_path = 0;
     res->time = 0;
