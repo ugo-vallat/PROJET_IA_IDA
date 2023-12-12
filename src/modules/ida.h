@@ -11,19 +11,19 @@
 
 #define LIST_DONE_SIZE 512
 
-int min(int a, int b);
+/**
+ * @brief Réalise Ida*
+ * 
+ * @param initial_state Etat de départ
+ * @param goal_gived Etat But
+ * @param fun_h Heuristique utilisée
+ * @param fun_mc Fonction de calcul des coûts utilisée
+ * @return Le Résultat de la recherche
+ */
+
 
 ResSearch* ida(State initial_state, State goal_gived, fun_heuristic fun_h, fun_move_cost fun_mc);
 
-unsigned int fEtat(State init, int g);
-
-int heuristic(State init);
-
-bool bounded_depth(List* buff, List* done, List *path,int g, unsigned *created, unsigned *processed, unsigned *ite);
-
-void addToPath_ida(List* path, Action* act);
-
-int cost_movement(Move mv);
 
 
 

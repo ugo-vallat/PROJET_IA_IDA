@@ -57,6 +57,7 @@ void addToPath_ida(List* path, Action* act) {
  * @param ite Nombre d'itérations 
  * @return true si solution, false sinon
  */
+
 bool bounded_depth(List **path_solution, unsigned *created, unsigned *processed, unsigned *ite){
     /* initialisation des listes */
     List* buff = createList(STACK_MAX_SIZE);    /* noeuds à explorer */
@@ -114,7 +115,7 @@ bool bounded_depth(List **path_solution, unsigned *created, unsigned *processed,
             for(int i = 0; i < nb_next_actions; i++) {
                 tmp_action = next_actions[i];
                 tmp_action.move.mouv_index = path_size;
-                tmp_action.move.weight = move_cost(tmp_action.move); // changer la fonction cost_movement si jamais on implémente les déplacement à différent couts
+                tmp_action.move.weight = move_cost(tmp_action.move); // changer la fonction move_cost si jamais on implémente les déplacement à différent couts
                 tmp_action.move.g_value = cur->move.g_value + tmp_action.move.weight;
                 
                 /*calcul de f */
@@ -159,6 +160,7 @@ bool bounded_depth(List **path_solution, unsigned *created, unsigned *processed,
     *path_solution = path;
     return found;
 }
+
 
 
 
