@@ -171,9 +171,11 @@ ResSearch* ida(State initial_state, State goal_gived, fun_heuristic fun_h, fun_m
     init_state = initial_state;
     goal = goal_gived;
     bound = fEtat(initial_state,0);
+    
 
    /* Initialisation structure résultat*/
     ResSearch *res = createResSearch(IDA, 50);
+    res->initial_state = initial_state;
     List *path;
 
     /* lancement du timer */
@@ -187,7 +189,9 @@ ResSearch* ida(State initial_state, State goal_gived, fun_heuristic fun_h, fun_m
         /* lancement de ida */
         printf("\n ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ seuil : %d\n", bound);
         res->found = bounded_depth(&path, &(res->nb_state_created), &(res->nb_state_processed), &(res->nb_ite));
+        printf("\033[2A\r");
     }
+    printf("\033[4B\r");
 
     /* fin du timer */
     end = clock();

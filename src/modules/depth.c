@@ -113,6 +113,7 @@ ResSearch* search_depth(State initial_state, State goal, unsigned max_depth) {
     /* Initialisation structure résultat*/
     ResSearch *res = createResSearch(DEPTH, max_depth+2);
     res->depth = max_depth;
+    res->initial_state = initial_state;
 
     /* initialisation outils */
     List *buff = createList(STACK_MAX_SIZE);    /* noeuds à explorer */

@@ -62,10 +62,12 @@ unsigned getMaxDepthFromUser() {
 fun_heuristic getHeuristicFromUser() {
     int res;
     printf("\n\t 1 - Etat mal positionné\n");
-    printf("\t 2 - Mal positionné + profondeur\n");
+    printf("\t 2 - Profondeur source\n");
+    printf("\t 3 - Profondeur source + destination\n");
+    printf("\t 4 - Mal positionné pour cas coup = id\n");
     printf("Choisir heuristique :");
     scanf("%d",&res);
-    if(res != H_SIMPLE && res != H_DEPTH)
+    if(res < 1 || res > 4)
         error("Choix de l'heuristique invalide ", EXIT_FAILURE);
     return getFunHeuristic(res);
 }
@@ -76,7 +78,7 @@ fun_move_cost getMoveCostFromUser() {
     printf("\t 2 - Coup = id de l'anneau\n");
     printf("Choisir calcul des coups :");
     scanf("%d",&res);
-    if(res != C_ONE && res != C_ID)
+    if(res < 1 || res > 2)
         error("Choix de l'heuristique invalide ", EXIT_FAILURE);
     return getFunMoveCost(res);
 }
@@ -114,13 +116,13 @@ int main(){
     
 
     displayResSearch(res);
-    sleep(1);
     printf("ETAT INITIAL:\n\n");
     displayState(start);
     printf("ETAT FINAL:\n\n");
     displayState(end);
+    sleep(1);
     printf("MOUVEMENTS :\n\n");
-    showGameAnimation(res, start);
+    showGameAnimation(res);
     deleteResSearch(res);
 
     return 0;

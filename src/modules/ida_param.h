@@ -15,7 +15,7 @@ typedef int (*fun_heuristic)(State cur, State goal);
 typedef int (*fun_move_cost)(Move m); 
 
 typedef enum e_heuristic{
-    H_SIMPLE=1, H_DEPTH=2
+    H_SIMPLE=1, H_DEPTH=2, H_DEPTH_2=3, H_FOR_COST=4
 } Heuristic;
 
 typedef enum e_move_cost{

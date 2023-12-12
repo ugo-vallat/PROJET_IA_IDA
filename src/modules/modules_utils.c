@@ -47,7 +47,7 @@ void displayResSearch(ResSearch *res) {
     Move m;
     for(unsigned i = 0; i < res->size_path; i++) {
         m = res->path[i];
-        printf(" ┃   %d-  %d : (%d -> %d) - %d\n",m.mouv_index, m.id, m.stem_src, m.stem_dst, m.weight);
+        printf(" ┃   %2d-  id %2d : (%d -> %d) - %d\n",m.mouv_index, m.id, m.stem_src, m.stem_dst, m.weight);
     }
     printf(" ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \n\n");
 }
@@ -62,10 +62,10 @@ void loadingBarDepth(int size, int max, int ite) {
     printf("%-8d\r", ite);fflush(stdout);
 }
 
-void showGameAnimation(ResSearch *res, State init_state) {
+void showGameAnimation(ResSearch *res) {
     if(!res->found) return;
     __useconds_t time_wait = 1000000;
-    displayState(init_state);
+    displayState(res->initial_state);
 
     /* si chemin vide on arrête */
     if(res->size_path <= 0) return;
@@ -73,7 +73,7 @@ void showGameAnimation(ResSearch *res, State init_state) {
     /* affichage premier mouvement  */
     printf("\033[4A\r");
     usleep(time_wait);
-    Action act = applyMove(init_state, res->path[0]);
+    Action act = applyMove(res->initial_state, res->path[0]);
     displayState(act.after);
     printf("\033[4A\r");
     usleep(time_wait);

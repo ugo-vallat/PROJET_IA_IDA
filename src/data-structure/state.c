@@ -6,6 +6,13 @@
 #include "state.h"
 
 
+/*
+    ===========================================
+    ===  Utils pour les algos de recherche  ===
+    ===========================================
+*/
+
+
 void findMoves(State e, Move* moves){
     Move m;
     int moves_iterator = 0;
@@ -52,6 +59,34 @@ bool stateIsGoal(State s, State but){
     return equalState(s,but);
 }
 
+void stateFindNextActions(State s, int *nb_move, Action* action_possibles){
+    Move moves_tab[12];
+    *nb_move = 0;
+    findMoves(s, moves_tab);
+    for (int i = 0 ; i < 9; i++) {
+      if (moves_tab[i].id != -1){
+        action_possibles[i] = applyMove(s,moves_tab[i]);
+        (*nb_move)++;
+      }
+    }
+}
+
+
+bool isMovePossible(State s, Move m){
+    bool test = true;
+    if (s.matrix[m.stem_src][0] <= 0 || s.matrix[m.stem_dst][0] > 3){
+      return false;
+    }
+    return test;
+}
+
+
+/*
+    ===============
+    ===  STATE  ===
+    ===============
+*/
+
 bool equalState(State s1, State s2){
     /* comparer la taille des colonnes */
     for(unsigned i = 0; i < 4; i++)
@@ -68,30 +103,16 @@ bool equalState(State s1, State s2){
     return true;
 }
 
-void stateFindNextActions(State s, int *nb_move, Action* action_possibles){
-    Move moves_tab[12];
-    *nb_move = 0;
-    findMoves(s, moves_tab);
-    for (int i = 0 ; i < 9; i++) {
-      if (moves_tab[i].id != -1){
-        action_possibles[i] = applyMove(s,moves_tab[i]);
-        (*nb_move)++;
-      }
-    }
-}
-
-bool isMovePossible(State s, Move m){
-    bool test = true;
-    if (s.matrix[m.stem_src][0] <= 0 || s.matrix[m.stem_dst][0] > 3){
-      return false;
-    }
-    return test;
-}
-
 void stateEmpty(State* s) {
     for(unsigned i = 0; i < 4; i++)
         for(unsigned j = 0; j < 4; j++)
             s->matrix[i][j] = 0;
+}
+
+void copyState(State *src, State *dst) {
+    for(unsigned i = 0; i < 4; i++)
+        for(unsigned j = 0; j < 4; j++)
+            dst->matrix[i][j] = src->matrix[i][j];
 }
 
 
@@ -112,28 +133,6 @@ void deleteAction(Action* act) {
     free(act);
 }
 
-
-/*
-    ===============
-    ===  COPIE  ===
-    ===============
-*/
-
-void copyState(State *src, State *dst) {
-    for(unsigned i = 0; i < 4; i++)
-        for(unsigned j = 0; j < 4; j++)
-            dst->matrix[i][j] = src->matrix[i][j];
-}
-
-void copyMove(Move *src, Move *dst) {
-    dst->id = src->id;
-    dst->stem_src = src->stem_src;
-    dst->stem_dst = src->stem_dst;
-    dst->weight = src->weight;
-    dst->mouv_index = src->mouv_index;
-    dst->g_value = src->g_value;
-}
-
 void copyAction(Action *src, Action *dst) {
     copyState(&(src->before), &(dst->before));
     copyState(&(src->after), &(dst->after));
@@ -143,10 +142,19 @@ void copyAction(Action *src, Action *dst) {
 
 
 /*
-    ===============
-    ===  TESTS  ===
-    ===============
+    ==============
+    ===  MOVE  ===
+    ==============
 */
+
+void copyMove(Move *src, Move *dst) {
+    dst->id = src->id;
+    dst->stem_src = src->stem_src;
+    dst->stem_dst = src->stem_dst;
+    dst->weight = src->weight;
+    dst->mouv_index = src->mouv_index;
+    dst->g_value = src->g_value;
+}
 
 void testMoveIsValid(Move m, char* fun_name) {
     bool test = true;
@@ -162,6 +170,12 @@ void testMoveIsValid(Move m, char* fun_name) {
         exit(EXIT_FAILURE);
     }
 }
+
+/*
+    ===============
+    ===  UTILS  ===
+    ===============
+*/
 
 void testStemValid(int stem, char* fun_name) {
     if (0 > stem || 3 < stem) {
@@ -182,6 +196,11 @@ void displayMove(Move m){
   printf("(pic depart = %d , pic arrivee = %d , valeur deplacee = %d, index = %d, weight = %d, g_value = %d)\n", 
     m.stem_src,m.stem_dst,m.id, m.mouv_index, m.weight, m.g_value);
 }
+
+#define BLUE "\033[38;5;27m"
+#define YELLOW "\033[38;5;226m"
+#define RED "\033[38;5;196m"
+#define REST "\033[0m"
 
 /**
  * @brief Convertion valeur en char (vtc)

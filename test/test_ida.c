@@ -17,7 +17,7 @@ void test_ida_main() {
 
     displayResSearch(res);
     sleep(1);
-    showGameAnimation(res, start);
+    showGameAnimation(res);
     deleteResSearch(res);
 }
 

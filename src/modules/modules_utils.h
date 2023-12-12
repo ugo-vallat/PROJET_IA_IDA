@@ -53,7 +53,7 @@ void loadingBarDepth(int size, int max, int ite);
  * @param res Résultat de la recherche
  * @param init_state Etat initiale
  */
-void showGameAnimation(ResSearch *res, State init_state);
+void showGameAnimation(ResSearch *res);
 
 /*
     ===================
