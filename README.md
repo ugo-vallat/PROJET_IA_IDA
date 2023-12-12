@@ -35,26 +35,26 @@ $ ./bin/tdepth <num état départ> <num état but> <profondeur de recherche>
 $ ./bin/tida <num état départ> <num état but> <num fonction heuristique> <numéro fonction poids>
 ```
 
-Pour ida, le numéro de la fonction heuristique correspond à :
-    1 - Etat mal positionné
-    2 - Profondeur source
-    3 - Profondeur source + destination
-    4 - Mal positionné pour cas coup = id
+Pour ida, le numéro de la fonction heuristique correspond à :  
+    1 - Etat mal positionné  
+    2 - Profondeur source  
+    3 - Profondeur source + destination  
+    4 - Mal positionné pour cas coup = id  
 
-Pour ida, le numéro de la fonction poids correspond à :
-    1 - Coup 1
-    2 - Coup = id de l'anneau
+Pour ida, le numéro de la fonction poids correspond à :  
+    1 - Coup 1  
+    2 - Coup = id de l'anneau  
 
 
 ### Notes / remarques
 Différents jeux de tests sont disponibles dont voici des recommandations d'utilisation:
 
-Association des tests : 
-    start -> end
-    1     -> 1,2
-    2     -> 3,4,5,6
-    3     -> 7
-    4     -> 8
-    5     -> 9
-    6     -> 10,11,12,13,14
-    7     -> 15
+Association des tests :   
+    start -> end  
+    1     -> 1,2  
+    2     -> 3,4,5,6  
+    3     -> 7  
+    4     -> 8  
+    5     -> 9  
+    6     -> 10,11,12,13,14  
+    7     -> 15  
