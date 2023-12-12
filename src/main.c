@@ -115,6 +115,11 @@ int main(){
 
     displayResSearch(res);
     sleep(1);
+    printf("ETAT INITIAL:\n\n");
+    displayState(start);
+    printf("ETAT FINAL:\n\n");
+    displayState(end);
+    printf("MOUVEMENTS :\n\n");
     showGameAnimation(res, start);
     deleteResSearch(res);
 
