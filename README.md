@@ -1,5 +1,5 @@
 # PROJET IA
-### Ugo VALLAT
+### Ugo VALLAT MUNOS ENZO
 
 ## Présentation
 Ce projet a été réalisé dans le cadre de l'UE d'IA pour la partie symbolique.
